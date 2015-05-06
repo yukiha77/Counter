@@ -12,18 +12,16 @@ public class CharacterBase : MonoBehaviour {
 	protected bool lifeFlag = true;
 	// タイマー
 	protected float timer;
+	// 武器
+	protected GameObject[] weaponRack = new GameObject[2];
 	// ショット
-	[HideInInspector]
-	public bool shotFlag;
+	private bool shotFlag;
 	// セカンダリショット
-	[HideInInspector]
-	public bool subShotFlag;
+	private bool subShotFlag;
 	// ブースト
-	[HideInInspector]
-	public bool boostFlag;
+	private bool boostFlag;
 	// 必殺技(ボム)
-	[HideInInspector]
-	public bool exWeaponFlag;
+	private bool exWeaponFlag;
 
 	// 移動 1.左右 2.上下 3.減速
 	protected void Move(float ix, float iz) {
@@ -51,30 +49,25 @@ public class CharacterBase : MonoBehaviour {
 	protected void IsDead(int ishield) {
 		if (ishield < 0)
 			Dead();
-
 		if (lifeFlag != false)
 			return;
-
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 		Destroy(player);
 	}
 
+	// タイマー
 	protected void Timer() { timer += Time.deltaTime; }
 
 	// 生死フラグ
 	protected void Dead() { lifeFlag = false; }
 	protected void Revival() { lifeFlag = true; }
 
-	// ブーストフラグ
-	protected void OnBoost() { boostFlag = true; }
-	protected void OffBoost() { boostFlag = false; }
-
 	// ダメージ処理
 	public void SetShieldDamage(int attack) { shield -= attack; }
 
 	// フラグ取得
-	public bool GetIsLife(bool ilife) { return lifeFlag; }
-	public bool GetIsShot(bool ishot) { return shotFlag; }
-	public bool GetIsSubShot(bool ishot) { return subShotFlag; }
-	public bool GetIsBoost(bool iboost) { return boostFlag; }
+	public bool GetIsLife() { return lifeFlag; }
+	public bool GetIsShot() { return shotFlag; }
+	public bool GetIsSubShot() { return subShotFlag; }
+	public bool GetIsBoost() { return boostFlag; }
 }

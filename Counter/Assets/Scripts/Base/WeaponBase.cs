@@ -12,21 +12,18 @@ public class WeaponBase : MonoBehaviour {
 	protected int level;
 	// 経験値
 	protected int exp;
-	// 使用する装備
-	[SerializeField]
-	protected int useWeapon;
 	// ショットのパターン
 	[SerializeField]
-	protected int pattern;
+	protected int pattern = 1;
 	// Wayの数
-	protected int way;
+	protected int way = 1;
 	// ファイアレート
 	[SerializeField]
-	protected float waitTimer;
+	protected float waitTime;
 	// 装備使用機体
 	protected GameObject user;
 	// 弾の種類
-	protected GameObject[] weaponType;
+	protected GameObject weaponType;
 	// タイマー
 	private float timer;
 
@@ -34,10 +31,9 @@ public class WeaponBase : MonoBehaviour {
 	protected void Shot(bool ishot) {
 		if (!ishot)
 			return;
-
 		Timer();
-		if (timer > waitTimer) {
-			WeaponGenerator(user, useWeapon);
+		if (timer > waitTime) {
+			WeaponGenerator(user);
 			timer = 0;
 		}
 	}
@@ -62,20 +58,19 @@ public class WeaponBase : MonoBehaviour {
 		}
 	}
 
-	// 装備生成   1.オブジェクト 2.弾の種類
-	void WeaponGenerator(GameObject user, int type) {
+	// 装備生成   1.オブジェクト
+	void WeaponGenerator(GameObject user) {
 		// 銃口
 		Vector3 muzzle;
 		// 対象のゲームオブジェクト名
 		switch (user.gameObject.name) {
 		case "Player":
-			user = GameObject.FindGameObjectWithTag("Player");
 			muzzle = new Vector3(user.transform.position.x, 0, user.transform.position.z + 1);
-			if (weaponType[type].gameObject.tag == "Blade")
+			if (weaponType.gameObject.tag == "Blade")
 				muzzle = new Vector3(user.transform.position.x, 0, user.transform.position.z);
-			GameObject weapon = (GameObject)Instantiate(weaponType[type], muzzle, weaponType[type].transform.rotation);
+			GameObject weapon = (GameObject)Instantiate(weaponType, muzzle, weaponType.transform.rotation);
 			// (Clone)対策
-			weapon.name = weaponType[type].name;
+			weapon.name = weaponType.name;
 			break;
 		}
 	}
@@ -87,9 +82,24 @@ public class WeaponBase : MonoBehaviour {
 	// 経験値獲得
 	public void WeaponExp(int wexp) { exp += wexp; }
 
+	// レベル初期化
+	public void WeaponLevelZero() { level = 0; }
+
 	// レベルアップ
 	public void WeaponLevelUp() { level++; exp = 0; }
 
-	// 外部からのレベル参照
+	// レベルダウン
+	public void WeaponLevelDown() { level--; }
+
+	// way数アップ
+	public void WeaponWayUp() { way++; }
+
+	// セット
+	public void SetWeaponExp(int wexp) { exp = wexp; }
+
+	// 外部取得
+	public int GetWeaponExp() { return exp; }
 	public int GetWeaponLevel() { return level; }
+	public int GetIsWay() { return way; }
+	public int GetIsPattern() { return pattern; }
 }
