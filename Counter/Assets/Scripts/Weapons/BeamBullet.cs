@@ -5,13 +5,18 @@ public class BeamBullet : WeaponBase {
 	Player _player;
 
 	void Awake() {
-		user	   = GameObject.FindGameObjectWithTag("Player");
-		_player	   = user.GetComponent<Player>();
-		weaponType = this.gameObject;
+		_player	= GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 	}
 
 	void Update() {
-		Shot(_player.GetIsShot());
-		Move(pattern);
+		Move();
+	}
+
+	// ヒット時の処理
+	void OnTriggerEnter(Collider coll) {
+		if (coll.gameObject.tag == "Enemy") {
+			Destroy(this.gameObject);
+			WeaponExp(10);
+		}
 	}
 }

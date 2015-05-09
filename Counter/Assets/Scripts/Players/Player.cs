@@ -2,20 +2,21 @@
 using System.Collections;
 
 public class Player : CharacterBase {
-	GameObject input;
-	InputMgr _input;
+	InputManager _input;
 
 	void Awake() {
-		input  = GameObject.FindGameObjectWithTag("InputMgr");
-		_input = input.GetComponent<InputMgr>();
+		_input = GameObject.FindGameObjectWithTag("InputMgr").GetComponent<InputManager>();
 	}
 
 	void Update() {
-		Move(_input.GetInputHorizontal(),
-		     _input.GetInputVertical());
-		Shot(_input.GetInputShot(),
-		     _input.GetInputSubShot());
-		Boost(_input.GetInputBoost());
-		ExWeapon(_input.GetInputExWeapon());
+		Vector3 test = new Vector3(Mathf.Sin(5), 0, 0);
+		Debug.Log(test);
+		Move	(_input.Horizontal,
+		     	 _input.Vertical);
+		Shot	(_input.Shot,
+		     	 _input.SubShot);
+		Boost	(_input.Boost);
+		ExWeapon(_input.ExWeapon);
+		IsDead  (shield);
 	}
 }

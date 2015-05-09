@@ -8,18 +8,17 @@ public class Leech : WeaponBase {
 	private bool expFlag;
 
 	void Update() {
-		Debug.Log("Level : " + level);
+		Debug.Log("Level : " + Level);
 		//Debug.Log("EXP : " + exp);
-		LeechTrigger(exp, leech);
+		LeechTrigger(Exp, leech);
 		BoostProc(GetIsLeech());
 		LeechExpCharge(GetIsExp());
 	}
 
 	// ブーストのトリガー処理
 	void LeechTrigger(int wexp, float ileech) {
-		GameObject player = GameObject.FindGameObjectWithTag("Player");
-		Player _player	  = player.GetComponent<Player>();
-		if (wexp >= 100 && _player.GetIsBoost()) {
+		Player _player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+		if (wexp >= 100 && _player.boost) {
 			OnLeech();
 			WeaponLevelUp();
 		} else if (GetLeechParam() > MAX_LEECH) {
@@ -41,7 +40,7 @@ public class Leech : WeaponBase {
 		if (!expflag)
 			return;
 		WeaponExp(1);
-		if (GetWeaponExp() > 100)
+		if (Exp > 100)
 			SetWeaponExp(100);
 	}
 
@@ -51,17 +50,17 @@ public class Leech : WeaponBase {
 	void UseLeech() { leech = Time.time; }
 
 	// かすり判定フラグ
-	void OnLeech() { leechFlag = true; }
+	void OnLeech()  { leechFlag = true; }
 	void OffLeech() { leechFlag = false; }
 
 	// 経験値入手フラグ
-	void OnExp() { expFlag = true; }
+	void OnExp()  { expFlag = true; }
 	void OffExp() { expFlag = false; }
 
 	// 取得
 	float GetLeechParam() { return leech; }
-	bool GetIsLeech() { return leechFlag; }
-	bool GetIsExp() { return expFlag; }
+	bool GetIsLeech() 	  { return leechFlag; }
+	bool GetIsExp()		  { return expFlag; }
 
 	// かすり判定
 	void OnTriggerEnter(Collider coll) {
